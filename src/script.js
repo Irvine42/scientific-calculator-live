@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     console.log('HTML document is ready.')
-    const display = document.getElementById('calc-display')
-    const buttons = document.getElementsByClassName('btn')
-    console.log(display)
-    console.log(buttons)
+    const display = document.getElementById('calc-display');
+    const buttons = document.getElementsByClassName('btn');
 
     let currentvalue = "";
 
@@ -13,7 +11,17 @@ document.addEventListener('DOMContentLoaded', function () {
         const convertedvalue = currentvalue
             .replace("x", "*")
             .replace("÷", "/")
-            .replace('%', '*0.01'); //THESE ONLY WORK ONCE, NEED SOME KIND OF LOOP FOR MORE THAN ONE X SYMBOL
+            .replace('%', '*0.01')
+            .replace('π', 'Math.PI')
+            .replace('sin', 'Math.sin')
+            .replace('ln', 'Math.log')
+            .replace('cos', 'Math.cos')
+            .replace('log', 'Math.log10')
+            .replace('e', 'Math.E')
+            .replace('tan', 'Math.tan')
+            .replace('√', 'Math.sqrt');
+
+        //THESE ONLY WORK ONCE, NEED SOME KIND OF LOOP FOR MORE THAN ONE X SYMBOL
         const result = eval(convertedvalue);
         currentvalue = result.toString();
     }
@@ -24,16 +32,25 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('click', function () {
             const value = button.innerText;
 
-            if (value == 'AC') {
-                currentvalue = "";
+            try {
+                if (value == 'AC') {
+                    currentvalue = "";
+                }
+                else if (value == "=") {
+                    evaluateResult();
+                }
+                else {
+                    currentvalue += value;
+                }
+                display.value = currentvalue;
             }
-            else if (value == "=") {
-                evaluateResult();
+            catch (error) {
+                console.error(error);
+                currentvalue = 'ERROR';
+                display.value = currentvalue;
             }
-            else {
-                currentvalue += value;
-            }
-            display.value = currentvalue;
+
+
         })
     }
 });
